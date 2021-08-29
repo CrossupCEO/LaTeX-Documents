@@ -1,0 +1,27 @@
+{
+    "latex-workshop.latex.tools": [
+        {
+            "name": "ptex2pdf",
+            "command": "ptex2pdf",
+            "args": [
+                "-l",
+                "-ot",
+                //"-kanji=utf8",
+                "-interaction=nonstopmode",
+                "-synctex=1 -file-line-error",
+                "%DOCFILE%.tex"
+            ]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "pLaTeX2e",
+            "tools": [
+                "ptex2pdf"
+            ]
+        }
+    ],
+    "latex-workshop.view.pdf.viewer": "tab",
+    "editor.renderControlCharacters": true,
+    "editor.accessibilitySupport": "off"
+}

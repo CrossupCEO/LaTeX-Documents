@@ -6,7 +6,7 @@
             "args": [
                 "-l",
                 "-ot",
-                //"-kanji=utf8",
+                "-kanji=utf8",
                 "-interaction=nonstopmode",
                 "-synctex=1 -file-line-error",
                 "%DOCFILE%.tex"

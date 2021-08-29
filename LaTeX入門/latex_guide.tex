@@ -1,0 +1,272 @@
+\documentclass[a4paper,dvipdfmx]{jsreport}
+
+\usepackage{url}
+\usepackage{listings,jlisting}
+\usepackage{tcolorbox}
+\usepackage{color}
+
+\title{理工系学生のための\LaTeX 入門ガイドブック}
+\author{岩下 雄一郎}
+
+\lstset{
+    basicstyle={\ttfamily\small}, %書体の指定
+    %language={C},
+    commentstyle=\textit,
+    keywordstyle=\bfseries,
+    frame=single, %フレームの指定
+    framesep=10pt, %フレームと中身（コード）の間隔
+    breaklines=true, %行が長くなった場合の改行
+    numbers=left,
+    numbersep={14pt},%行番号と本文との間隔（デフォルトは10pt)
+    numberstyle={\sffamily\scriptsize},
+    lineskip=-0.5ex, %行間の調整
+    tabsize=2, %Tabを何文字幅にするかの指定
+    breakindent = 0pt,
+    showstringspaces=false
+}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\part{\LaTeX 環境の構築}
+\chapter{\LaTeX2e 美文書作成入門 を用いた環境設定}
+\chapter{Visual Studio Codeの設定}
+
+\section{Visual Studio Code}
+Visual Studio Code（VS Code）は無料のコードエディタであり，様々な拡張機能が用意されています．
+
+\section{Visual Studio Codeのインストール}
+Visual Studio Codeは
+\begin{quote}
+    \url{https://code.visualstudio.com}
+\end{quote}
+からダウンロードできます．このリンクを開き，画面左側のDownloadボタンをクリックするとダウンロードが開始されます．以降はインストーラの指示に従ってコンピュータにインストールしてください．
+
+\section{拡張機能のインストール}
+VS Codeを開いてください．
+
+\begin{enumerate}
+    \item 左端のバーのExtensionsアイコンを選択．
+    \item 検索欄に拡張機能名を入力．
+    \item 拡張機能を選択し，Installをクリック．
+\end{enumerate}
+
+\LaTeX を書くうえで便利なパッケージを以下に挙げます．
+
+\subsection{Japanese Language Pack for Visual Studio Code}
+VS CodeのUIの日本語化パッケージです．Japanese Language Packと調べると出てきます．
+
+\subsection{LaTeX Workshop}
+\LaTeX のコンパイル，自動補間などをしてくれるパッケージです．LaTeX Workshopと検索．
+
+\section{LaTeX Workshopの設定}
+\subsection{settings.jsonを開く}
+\begin{enumerate}
+    \item ショートカットキー Ctrl + Shift + P（Mac: Command + Shift + P）またはF1でコマンドパレットを表示する．
+    \item settingsまたは設定と入力する．
+    \item 「基本設定: 設定(JSON)を開く」を選択．
+\end{enumerate}
+
+\subsection{settings.jsonの中身}
+以下のコードをコピーしてsettings.jsonに貼り付けてください．
+
+\begin{lstlisting}
+{
+"latex-workshop.latex.tools": [
+    {
+        "name": "ptex2pdf",
+        "command": "ptex2pdf",
+        "args": [
+            "-l",
+            "-ot",
+            //"-kanji=utf8",
+            "-interaction=nonstopmode",
+            "-synctex=1 -file-line-error",
+            "%DOCFILE%.tex"
+        ]
+    }
+],
+"latex-workshop.latex.recipes": [
+    {
+        "name": "pLaTeX2e",
+        "tools": [
+            "ptex2pdf"
+        ]
+    }
+],
+"latex-workshop.view.pdf.viewer": "tab",
+"editor.renderControlCharacters": true,
+"editor.accessibilitySupport": "off"
+}
+\end{lstlisting}
+
+\part{\LaTeX の基本}
+\chapter{\LaTeX を使ってみる}
+
+\LaTeX で文書を作成するのがどのような流れで行われるのか体験してみましょう．ここに出てくるコマンドは後ほど説明しますので，今は覚える必要はありません．
+
+エディタで新規ファイルを作成し，次のコードを入力してください．
+\begin{lstlisting}[language=TeX]
+\documentclass{article}
+\begin{document}
+
+Hello, \TeX!
+\[ \int dx = x + C. \]
+
+\end{document}
+\end{lstlisting}
+
+ここで，次の事柄に注意してください．
+\begin{itemize}
+    \item 全て直接入力（いわゆる半角文字）で打ち込む
+    \item 上に書いた通りに打ち込むこと（例：\verb|\TeX|を\verb|\Tex|と書いてはいけない
+    \item 各行の最後でEnterキーを押して改行．スペースキーではダメ．
+    \item 半角の\verb|\|はWindowsでは\verb|¥|のこと．
+\end{itemize}
+
+入力し終えたら，保存しましょう．ファイル名は英数字が望ましいです．拡張子は「tex」です．例えば，sample.texです．
+
+次に，タイプセット（コンパイル）ボタンを押してください．
+\begin{itemize}
+    \item TeXShopなら左上の\fbox{タイプセット}ボタン．
+    \item TeXworksなら$\triangleright$ボタン
+    \item VSCodeなら緑色の$\triangleright$ボタン
+\end{itemize}
+を押してください．
+
+次の内容がPDFに出力されるはずです．
+
+\begin{tcolorbox}
+    Hello, \TeX!
+    \[ \int dx = x + C. \]
+\end{tcolorbox}
+
+ここでは，次のような処理が行われています．
+\begin{enumerate}
+    \item articleというドキュメントクラス（文書の種類）で文書を作成する．（1行目）
+    \item 文書を作成せよ．（2行目）
+    \item 文書の一段落目に
+        \begin{tcolorbox}
+            Hello, \TeX!
+            \[ \int dx = x + C. \]
+        \end{tcolorbox}
+        を出力せよ．（4，5行目）
+    \item 文書を終了せよ．（7行目）
+\end{enumerate}
+
+このように，\LaTeX では全て自分でレイアウト・文書構造をコマンドを用いて設定します．これがワープロソフトと大きく異なる点ではないでしょうか．
+
+次ページから\LaTeX で文書を作成するための道具を紹介して行きます．
+
+\chapter{文書作成の基礎}
+\section{\LaTeX 文書の型}
+\subsection{文書クラス}
+Wordでは新規ファイルを開いていきなり本文が書けますが，\LaTeX では違います．まず，\textgt{文書（ドキュメント）クラス}を設定する必要があります．これは，どのテンプレートや用紙サイズを用いるかなど，文書のレイアウトの大枠を決めるものです．次のようなコマンドを書きます．
+\begin{quote}
+    \verb|\documentclass[オプション]{文書クラス名}|
+\end{quote}
+
+文書クラスには主に表\ref{tab:documentclass}に示すものがあります．基本的には和文（新・横）と書かれているものを使用してください．jsclassesの最新バージョンで使用可能です．uをつけたものはup\LaTeX 用です．作成する文書の形式に合うものを選び，文書クラス名の欄に入力してください．
+\begin{table}[h]
+    \centering
+    \caption{文書クラス}
+    \label{tab:documentclass}
+    \begin{tabular}{|c|llll|}
+        \hline
+        用途 & 欧文 & 和文（旧・横) & 和文（旧・縦） & 和文（新・横）\\ \hline
+        論文・レポート & \verb|article| & \verb|(u)jarticle| & \verb|(u)tarticle| & \verb|jsarticle| \\
+        長い報告書 & \verb|report| & \verb|(u)jreport| & \verb|(u)treport| & \verb|jsreport| \\
+        本 & \verb|book| & \verb|(u)jbook| & \verb|(u)tbook| & \verb|jsbook| \\ \hline
+    \end{tabular}
+\end{table}
+
+次に，オプション欄では用紙サイズや本文の文字サイズを設定できます．なお，オプションを書かないこと（\verb|\documentclass{文書クラス名}|と入力）もでき，この場合はデフォルト設定となります．デフォルトでは用紙サイズA4（縦），本文の文字サイズ10ptです．
+
+\subsection{文書の開始と終了}
+文書クラスを設定しただけではまだ文章を書こうとしてもタイプセットできません．どこからどこまでが文書か設定する必要があります．次のように，本文を\verb|\begin{document}|と\verb|\end{document}|で挟みます．
+
+\begin{lstlisting}[language=TeX]
+\documentclass{jsarticle}
+\begin{document}
+本文をここに書きます．
+\end{document}
+\end{lstlisting}
+
+これをタイプセットすると次のようになります．
+\begin{tcolorbox}
+本文をここに書きます．
+\end{tcolorbox}
+
+\subsection{注意}
+以上で本文を出力できるようになりましたが，どんな文字でも出力できるわけではありません．後ほど説明しますので，出力できない文字があっても気にしないでください．
+
+\section{文書のレイアウト}
+\LaTeX ではWordと異なり，タイトルや章構成を明示的に記述する必要があります．それらは\textgt{コマンド}により設定します．
+\subsection{表題}
+\LaTeX では表題をコマンドにより表示することができます．デフォルトでは表題の内容は\textgt{タイトル}，\textgt{著者}，\textgt{日付}です．\verb|\documentclass{...}|と\verb|\begin{document}|の間の部分を\textgt{プリアンブル}と呼びます．ここに次のコマンドを書いてください．
+\begin{quote}
+    \verb|\title{文書タイトル}|\\
+    \verb|\autor{著者}|\\
+    \verb|\date{日付}|
+\end{quote}
+
+そして，タイトルを表示したい部分に
+\begin{quote}
+    \verb|\maketitle|
+\end{quote}
+と入力してください．\verb|\maketitle|が無ければ表題が表示されません．
+
+表題を表示する場合，\verb|\title|と\verb|\author|コマンドは必須です．\verb|\date|コマンドは任意ですが，書かない場合はタイプセットした日の日付が出力されます．また，これらのコマンドの引数の書き方に指定はありません．著者や日付を出力したくない場合は\verb|\author{}|や\verb|\date{}|などと括弧の中身を空欄にしてください．
+
+\subsection{目次}
+任意で目次を表示することができます．目次を表示したい箇所に
+\begin{quote}
+    \verb|\tableofcontents|
+\end{quote}
+と入力してください．
+
+\subsection{見出し}
+\LaTeX ではWordと異なり，見出しを明示的に書きます．文書クラスによって使えない見出しがあるので表で確認してください．
+
+\begin{table}[ht]
+    \centering
+    \caption{見出し}
+    \label{tb:title}
+    \begin{tabular}{|c|l|ccc|}
+        \hline
+        説明 & コマンド & \verb|jsbook| & \verb|jsreport| & \verb|jsarticle| \\ \hline
+        部 & \verb|\part{部}| & ◯ & ◯ & × \\
+        章 & \verb|\chapter{章}| & ◯ & ◯ & ◯ \\
+        節 & \verb|\section{節}| & ◯ & ◯ & ◯ \\
+        小節 & \verb|\subsection{小節}| & ◯ & ◯ & ◯ \\
+        小々節 & \verb|\subsubsection{小々節}| & ◯ & ◯ & ◯ \\ \hline
+    \end{tabular}
+\end{table}
+
+\section{注釈／コメント}
+\LaTeX では注釈の先頭に\verb|%|を書くことで注釈を書くことができます．例えば，次のように入力します．
+\begin{lstlisting}
+\documentclass{jsarticle}
+% コメントをここに書きます．
+\begin{document}
+本文をここに書きます．% 本文
+\[ \int dx = x + C. \] % 数式
+\end{document}
+\end{lstlisting}
+これをタイプセットすると次のようになります．
+\begin{tcolorbox}
+本文をここに書きます．% 本文
+\[ \int dx = x + C. \] % 数式
+\end{tcolorbox}
+
+\section{文字の扱い}
+\subsection{書体}
+ここでは，パッケージなしのデフォルトの状態で使える書体を紹介します．
+\subsubsection{和文}
+和文では\,\fbox{明朝体}\,と\,\fbox{\textgt{ゴシック体}}\,の2種類の書体が使えます．明朝体はデフォルトの和文書体です\footnote{明朝体を指定するコマンドも存在しますがここでは省略します．}．一方，ゴシック体を使用する際は\verb|\textgt{...}|コマンドで指定する必要があります．
+\subsubsection{欧文}
+欧文では
+\section{注意事項}
+\end{document}

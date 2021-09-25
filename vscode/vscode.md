@@ -1,6 +1,8 @@
 # Visual Studio CodeでLaTeXを利用する
 Visual Studio Code（以下，VS Code）はMicrosoftが開発しているGUIエディタであり，近年，多くのプログラマに使われてきています．VS Codeでは様々な拡張機能が配布されており，ここではLaTeXをVS Codeで利用するための手順と便利な拡張機能を紹介します．
 
+※ TeX Liveを導入済の前提で説明します．
+
 # VS Codeのインストール
 VS Codeを[こちら](https://code.visualstudio.com)のサイトからダウンロードしてください．英語で記述されていますが，後でVS Codeの日本語化を行うので心配しないでください．
 ![vscode-web](https://github.com/CrossupCEO/LaTeX-Documents/blob/main/vscode/img/vscode-web.png)
@@ -56,8 +58,9 @@ GUIの設定画面がありますが，ここでは簡潔に説明するため�
     "editor.accessibilitySupport": "off"
 }
 ```
+以上で設定完了です．
+
 
 【補足】こちらのコードを説明します
-
 - `latex-workshop.latex.tools` では，数あるコンパイルコマンドから使いたいコマンド`command`を引数`args`と共に好きな名前`name`をつけてtoolとして登録します．今回は`ptex2pdf`というコマンドしか登録していません．
 - `latex-workshop.latex.recipies` では，`latex-workshop.latex.tools`で登録したtoolからどれを選んでコンパイルするかrecipieとして記述します．例えば，コンパイルボタンを押すと，`ptex2pdf`というtoolを3回繰り返すrecipieを作成できます．今回は一般的な1回だけのrecipieを作りましま．

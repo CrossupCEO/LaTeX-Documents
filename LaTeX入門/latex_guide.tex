@@ -4,8 +4,11 @@
 \usepackage{listings,jlisting}
 \usepackage{tcolorbox}
 \usepackage{color}
+\usepackage{otf}
+\usepackage{hyperref}
+\usepackage{pxjahyper}
 
-\title{理工系学生のための\LaTeX 入門ガイドブック}
+\title{理工系学生のための\LaTeXe 入門ガイドブック}
 \author{岩下 雄一郎}
 
 \lstset{
@@ -30,9 +33,39 @@
 \maketitle
 \tableofcontents
 
+\newpage
+
 \part{\LaTeX 環境の構築}
-\chapter{\LaTeX2e 美文書作成入門 を用いた環境設定}
+\chapter{\TeX\ Liveのインストール}
+\TeX\ Liveは\LaTeX のデストリビューションです．これをインストールすることで\LaTeX 
+
+\section{\LaTeXe 美文書作成入門 を用いたインストール}
+\begin{figure}[hbtp]
+    \centering
+    \includegraphics[scale=0.18]{fig_bibunsho.jpg}
+    \caption{［改訂第8版］\LaTeXe 美文書作成入門}
+    \label{fig:bibunsho}
+\end{figure}
+
+図\ref{fig:bibunsho}は
+\begin{quote}
+    ［改訂第8版］LaTeX2ε美文書作成入門／奥村晴彦，黒木裕介　著／ISBN 978-4-297-11712-2
+\end{quote}
+です．こちらはp\LaTeXe を中心として\LaTeX を解説した本で，\LaTeX の主要な機能がほとんど書かれているため，\LaTeX のバイブルのように使うことができます．さらに，付属DVD-ROMを用いて簡単に\TeX\ Live（\LaTeX の実行環境）をインストールできる（WindowsまたはmacOS）ため，購入をおすすめします．
+
+\section{\TeX\ Live公式サイトからインストール}
+
+\TeX\ Liveの公式サイトから無料で\TeX\ Liveをインストールできます．最新版は\TeX\ Live 2021です．インストール方法は下記Webサイトを参照してください．
+\begin{description}
+    \item[\TeX\ Live 全般] \url{https://texwiki.texjp.org/?TeX%20Live}
+    \item[Windows] \url{https://texwiki.texjp.org/?TeX%20Live%2FWindows}
+    \item[macOS] \url{https://texwiki.texjp.org/?TeX%20Live%2FMac}
+    \item[Linux] \url{https://texwiki.texjp.org/?Linux#texlive}
+\end{description}
+
 \chapter{Visual Studio Codeの設定}
+
+本章では\TeX Live がインストール済みである前提でVisual Studio Codeの環境構築方法を解説します．
 
 \section{Visual Studio Code}
 Visual Studio Code（VS Code）は無料のコードエディタであり，様々な拡張機能が用意されています．
@@ -62,15 +95,17 @@ VS CodeのUIの日本語化パッケージです．Japanese Language Packと調�
 \LaTeX のコンパイル，自動補間などをしてくれるパッケージです．LaTeX Workshopと検索．
 
 \section{LaTeX Workshopの設定}
+Visual Studio Codeの拡張機能の設定はsettings.jsonというファイルを通して行えます．
+
 \subsection{settings.jsonを開く}
 \begin{enumerate}
-    \item ショートカットキー Ctrl + Shift + P（Mac: Command + Shift + P）またはF1でコマンドパレットを表示する．
+    \item ショートカットキー Ctrl\UTF{21E7}P（macOSでは\UTF{21E7}\UTF{2318}P）またはF1でコマンドパレットを表示する．
     \item settingsまたは設定と入力する．
     \item 「基本設定: 設定(JSON)を開く」を選択．
 \end{enumerate}
 
 \subsection{settings.jsonの中身}
-以下のコードをコピーしてsettings.jsonに貼り付けてください．
+以下のコードをコピーしてsettings.jsonに貼り付けるか，GitHubにアップロードしたので，そこからダウンロードしてください．
 
 \begin{lstlisting}
 {
@@ -81,7 +116,7 @@ VS CodeのUIの日本語化パッケージです．Japanese Language Packと調�
         "args": [
             "-l",
             "-ot",
-            //"-kanji=utf8",
+            "-kanji=utf8",
             "-interaction=nonstopmode",
             "-synctex=1 -file-line-error",
             "%DOCFILE%.tex"
@@ -103,13 +138,21 @@ VS CodeのUIの日本語化パッケージです．Japanese Language Packと調�
 \end{lstlisting}
 
 \part{\LaTeX の基本}
-\chapter{\LaTeX を使ってみる}
 
-\LaTeX で文書を作成するのがどのような流れで行われるのか体験してみましょう．ここに出てくるコマンドは後ほど説明しますので，今は覚える必要はありません．
+\chapter{\LaTeX とは}
+\TeX\footnote{日本では「テフ」や「テック」と呼ばれる．}はスタンフォード大学のDonald E. Knuth教授によって，数学やその他の技術的な文書の組版用に設計されたコンピュータ言語です．\TeX は無料であり，数式を簡単に美しく記述できるため，世界中の多くの研究者によって使われています．
 
-エディタで新規ファイルを作成し，次のコードを入力してください．
+\LaTeX\footnote{呼び方は「ラテフ」や「ラッテック」など．\LaTeX と表記できない場合はLaTeXと書くこともできる．\TeX は本来は別の数式組版ソフトウェアだが，近年は\TeX が\LaTeX を指していることが多い．}は素晴らしい文書作成ツールであり，簡単に綺麗な文書レイアウトを構成できます．しかし，私たちがよく使うMicrosoft WordやApple Pagesとは扱いが全く異なります．普段使っているこれらの文書作成ソフトはWYSIWYG (What You See Is What You Get) ，すなわち，ディスプレイに表示される内容と印刷結果が一致するように表現されたプログラムです．これは直感的に文書を編集できますが，文書構造が曖昧であり，データサイズが大きくなるとメモリを消費してもたつきやすくなります．それに対し，\LaTeX はWYSIWYM (what you see is what you mean) ，すなわち，ユーザは文書内容のみに集中すればよく，印刷物のフォーマットに合わせるのは全てコンパイラが行ってくれます．本章では，\LaTeX による文書作成の基本を解説します．
+
+
+\chapter{\LaTeX を使った文書作成}
+
+本章では，\LaTeX 初心者の方がすぐに\LaTeX で文書を作成できるようにします．各コマンドの詳細は次章以降で学んでください．それでは，\LaTeX で文書を作成するのがどのような流れで行われるのか体験してみましょう．文字数が多くなってしまいましたが，内容は簡単です．
+
+\section{はじめての\LaTeX による文書作成}
+エディタ（指定しません）で新規ファイルを作成し，次のコードを入力してください．
 \begin{lstlisting}[language=TeX]
-\documentclass{article}
+\documentclass{jsarticle}
 \begin{document}
 
 Hello, \TeX!
@@ -117,16 +160,46 @@ Hello, \TeX!
 
 \end{document}
 \end{lstlisting}
-
 ここで，次の事柄に注意してください．
 \begin{itemize}
     \item 全て直接入力（いわゆる半角文字）で打ち込む
-    \item 上に書いた通りに打ち込むこと（例：\verb|\TeX|を\verb|\Tex|と書いてはいけない
+    \item 大文字と小文字を区別（例：\verb|\TeX|と\verb|\Tex|は異なる）
     \item 各行の最後でEnterキーを押して改行．スペースキーではダメ．
     \item 半角の\verb|\|はWindowsでは\verb|¥|のこと．
 \end{itemize}
 
-入力し終えたら，保存しましょう．ファイル名は英数字が望ましいです．拡張子は「tex」です．例えば，sample.texです．
+入力し終えたら，ファイル名\footnote{.texファイルのファイル名は英数字が望ましい}を「sample.tex」として保存しましょう．保存場所はホームディレクトリが望ましいです．
+
+それでは，作成した\TeX ファイルをPDF化して行きます．その際，TeX ShopやVS Codeのコンパイル，ビルド機能を使ってボタンをクリックするだけでPDF化するのが一般的ですが，ここでは，\TeX ファイルをPDF化する際の過程を理解するために，コマンドを実行することでPDF化します．
+
+コマンドプロンプト（Windows）かターミナル（macOS，Linux）で次のコマンドを実行してください．これを実行すると，作成した\verb|.tex|ファイルが\textsf{DVIファイル}\footnote{DVIファイル（\textbf{d}e\textbf{v}ice-\textbf{i}ndependent file format，デバイス独立フォーマット）とは，文書のレイアウトなどをデバイスに依存しない形で保存したバイナリファイルです．}（拡張子は\verb|dvi|）に変換されます．この作業は\textgt{コンパイル}と呼ばれます．
+
+\begin{lstlisting}[language=sh]
+platex sample.tex
+\end{lstlisting}
+実行時に以下のメッセージが画面に表示されると思います．ここには，\verb|sample.dvi|が生成されたと書かれています．また，\verb|.tex|ファイルがp\LaTeXe の文法に則っていない場合はメッセージにエラーが表示されます．
+\begin{lstlisting}[language=sh]
+This is e-pTeX, Version 3.14159265-p3.8.3-191112-2.6 (utf8.euc) (TeX Live 2020) (preloaded format=platex)
+restricted \write18 enabled.
+entering extended mode
+(./sample.tex
+pLaTeX2e <2021-06-01>+2 (based on LaTeX2e <2021-06-01> patch level 1)
+L3 programming layer <2021-08-27>
+(/Applications/TeXLive/Library/texlive/2021/texmf-dist/tex/platex/jsclasses/jsa
+rticle.cls
+Document Class: jsarticle 2021/06/28 jsclasses (okumura, texjporg)
+
+(/Applications/TeXLive/Library/texlive/2021/texmf-dist/tex/platex/jsclasses/jsl
+ogo.sty))
+(/Applications/TeXLive/Library/texlive/2021/texmf-dist/tex/latex/l3backend/l3ba
+ckend-dvipdfmx.def (|extractbb --version))
+No file sample.aux.
+[1] (./sample.aux) )
+Output written on sample.dvi (1 page, 380 bytes).
+Transcript written on sample.log.
+\end{lstlisting}
+
+これで，DVIファイルが生成されました．しかし，これはバイナリファイルなので，私たちが読むことができる形式で出力しなければなりません．ここでは，DVIファイルをPDFファイルに変換します．\footnote{PDFを出力するのが一般的ですが，Postscriptファイルに変換してプレビュー・印刷することも可能です．}
 
 次に，タイプセット（コンパイル）ボタンを押してください．
 \begin{itemize}
@@ -269,4 +342,8 @@ Wordでは新規ファイルを開いていきなり本文が書けますが，\
 \subsubsection{欧文}
 欧文では
 \section{注意事項}
+
+\begin{thebibliography}{00}
+    \bibitem{texlive-ja} Karl Berry 編, 朝倉卓人 (wtsnjp) 訳, ``\TeX Live ガイド 2021,'' 2021年3月.
+\end{thebibliography}
 \end{document}

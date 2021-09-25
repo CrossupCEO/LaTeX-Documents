@@ -1,5 +1,5 @@
 # Visual Studio CodeでLaTeXを利用する
-Visual Studio Code（以下，VS Code）はMicrosoftが開発しているGUIエディタであり，近年，多くのプログラマに使われてきています．VS Codeでは様々な拡張機能が配布されており，ここではLaTeXをVS Codeで利用するための手順と便利な拡張機能を紹介します．
+Visual Studio Code（以下，VS Code）はMicrosoftが開発しているGUIエディタであり，多くのプログラマに愛用されています．VS Codeでは様々な拡張機能が配布されており，ここではLaTeXをVS Codeで利用するための手順とLaTeXを使うのに必要な拡張機能を紹介します．
 
 ※ TeX Liveを導入済の前提で説明します．
 
@@ -14,6 +14,8 @@ VS Codeを[こちら](https://code.visualstudio.com)のサイトからダウン�
 3. インストールしたい拡張機能を選択し，**Install**をクリックします．
 
 ## 必須な拡張機能
+上記のインストール方法に従って，以下の拡張機能をインストールしてください．
+
 ### Japanese Language Pack for Visual Studio Code
 VS Codeを日本語化してくれる拡張機能です．Japanese Language Packで調べると出てきます．
 
@@ -60,7 +62,15 @@ GUIの設定画面がありますが，ここでは簡潔に説明するため�
 ```
 以上で設定完了です．
 
-
 【補足】こちらのコードを説明します
 - `latex-workshop.latex.tools` では，数あるコンパイルコマンドから使いたいコマンド`command`を引数`args`と共に好きな名前`name`をつけてtoolとして登録します．今回は`ptex2pdf`というコマンドしか登録していません．
 - `latex-workshop.latex.recipies` では，`latex-workshop.latex.tools`で登録したtoolからどれを選んでコンパイルするかrecipieとして記述します．例えば，コンパイルボタンを押すと，`ptex2pdf`というtoolを3回繰り返すrecipieを作成できます．今回は一般的な1回だけのrecipieを作りましま．
+
+# 実際の利用方法
+VS CodeでLaTeXファイル（拡張子`.tex`）を開いてください．LaTeX Workshopが導入済の場合，上部に2つのボタンが追加されているはずです．
+- Build LaTeX Project：LaTeXファイルのコンパイルを行うボタン
+- View LaTeX PDF File：ページを2分割し，右側にコンパイル結果のPDFを表示する．
+
+LaTeXファイルをコンパイルする際は，Build LaTeX Projectボタンをクリックするだけでコンパイルが完了します．また，エラーが発生した場合はエラー内容が下部に表示されるはずです．
+
+![latexworkshop](https://github.com/CrossupCEO/LaTeX-Documents/blob/main/vscode/img/latexworkshop.png)
